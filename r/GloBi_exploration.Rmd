@@ -1,6 +1,8 @@
 ---
 title: "R Notebook"
-output: html_notebook
+output: 
+    html_document:
+        keep_md: yes
 author: Yikang Li
 date: 2018-10-13
 ---
@@ -12,7 +14,7 @@ Install and library package "rglobi":
 library(rglobi)
 ```
 
-```{r, eval=FALSE}
+```{r}
 library('dplyr')
 ```
 
@@ -133,7 +135,7 @@ Fields to study: Path, physiological_state, frequency_of_occurrence(percent), to
 
 ## Issues:  
 No function provided to achieve all records.   
-Only 1000 records are given when trying to extract data.   
+Only 1000 records are shown when trying to extract data.   
 ```{r}
 unique(get_interactions_by_type(interactiontype = c("eats"))['source_taxon_name'])
 ```
