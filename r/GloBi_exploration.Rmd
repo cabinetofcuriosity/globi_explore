@@ -1,0 +1,149 @@
+---
+title: "R Notebook"
+output: html_notebook
+author: Yikang Li
+date: 2018-10-13
+---
+
+# Data exploration of GloBi database  
+  
+Install and library package "rglobi":  
+```{r}
+library(rglobi)
+```
+
+```{r, eval=FALSE}
+library('dplyr')
+```
+
+
+## Scope of the database:  
+The data from GloBi database are interaction data between species. Each row requires one source taxon, one target taxon and the interaction type that connects them.    
+
+How many types of animals?  
+?Can't achieve the entire dataset, still working on it.  
+
+Variables in the database:   
+```{r}
+variables<- get_data_fields(opts = list())
+variables
+```
+
+```{r}
+length(variables[[1]])
+```
+There are total of 63 variables in GloBi database.   
+
+Interaction types:  
+```{r}
+get_interaction_types()
+```
+
+```{r}
+length(get_interaction_types()[[1]])
+```
+There are total of 22 types of interactions in this database.       
+
+## Data Quality:  
+Since later I will look at dataframe involving only interaction types "eats" and "eatenBy", let's analyze the quality of data with 'eats'.   
+
+#### Completeness:  
+Missing values:  
+```{r}
+data<- get_interactions_by_type(interactiontype = c("eats"))
+data
+```
+```{r}
+apply(is.na(data), 2, sum)
+```
+Above all, we can see variables "source_specimen_life_stage", "target_specimen_life_stage", "latitude
+", "longitude", "study_citation", "study_source_citation" are missing. Missing "latitude" and "longitude" means missing location data, which should be considered as an issue if we want to do visualizations on the map.  
+
+Except that, there are other missing values like "no:match" in column "target_taxon_external_id" and "no name" in column "target_taxon_name":   
+```{r}
+data%>%
+  filter(target_taxon_external_id == 'no:match')
+```
+    
+```{r}
+data%>%
+  filter(target_taxon_name == 'no name')
+```
+   
+#### Consistency and Accuracy:  
+Several problems are found when I was looking at the data with interaction type "eats":    
+
+1. The specific levels of "taxon_path" are inconsistent. 
+For example, the first two unique taxon_paths in "data" are:   
+"Biota | Animalia | Chordata | Vertebrata | Gnathostomata | Pisces | Actinopterygii" (Biota | Kingdom | Phylum | Subphylum | Infraphylum | ? | Class)  
+& "Aves | Ciconiiformes | Laridae | Larus | Larus argentatusLarus" (Class | Order | Family | Genus | species)
+
+Out of these two paths, one of them is specific from biota to class, the other is from class to species, which causes inconsistency in format.   
+
+2. Problems with accuracy:   
+For example, the value for "source_taxon_path" in the first row is like:  
+```{r}
+data[1,]$source_taxon_path
+```
+However, according to Wikipedia, it should be "Osteichthyes" instead of "Pisces". Actinopterygii (ray finned fishes) is a Subclass of Class Osteichthyes (bony fish).   
+
+3. There are also some weird records:  
+```{r}
+data%>%
+  filter(source_taxon_external_id == target_taxon_external_id)
+```
+In the above 2 rows, the source_taxon and target_taxon are the same: "Actinopterygii", which means Actinopterygii eats itself. It is true that some species cannibalise each other, but I haven't found such actions among Actinopterygii.   
+ 
+
+#### Uniqueness:  
+No. The entities within the dataset are not unique. This can be known by testing the length before and after removing duplicated rows:    
+```{r}
+length(data[[1]])
+length(data[!duplicated(data),][[1]])
+```
+
+#### Integrity:     
+???  
+
+#### Conformity:  
+So far, I believe that the data conform to the right conventions and standards.  
+
+
+#### Standards that are required to input data into GloBi (cited from https://www.globalbioticinteractions.org/contribute)  
+"Provide a (permanent) url to a web-accessible existing interaction dataset along with a data citation. Any structured data format / API will do, and csv/tsv file formats are preferred. Examples includes references to openly accessible datapaper (e.g. Raymond et al. 2011, Ferrer-Paris et al. 2014), data hosted in github (e.g. Hurlbert 2014) or publicly accessible APIs (e.g. iNaturalist). For citations, DOIs are preferred, but any will do as long as they describe the source of the data."   
+
+## Explore the data:  
+I am particularly interested in interaction types 'eats' and 'eatenBy'. It will be awesome to recognize some interesting patterns using GloBi database. For example, do species from same genus or family (or with similar taxon path) eat similar species? (Cause some difficulty because of the inconsistency in format of path)  
+I am also thinking about making visualizations of the global biotic food chain.    
+While without the data of lat and lon (location), we have to narrow our scope of study.   
+
+
+For example, explore "eats" and "eatenBy" interaction data for source_taxon: 'Actinopterygii', we can see there are 216 unique species that are eaten by Actinopterygii:  
+```{r}
+data10194<- get_interactions_by_type(interactiontype = c("eats"))%>%
+  filter(source_taxon_external_id == 'WORMS:10194')
+data10194
+```
+
+```{r}
+unique(data10194['target_taxon_name'])
+```
+What are the similaries or difference between these target taxon?   
+Fields to study: Path, physiological_state, frequency_of_occurrence(percent), total_volume_ml, total_volume_ml_percent, total_count, total_count_percent.  
+
+## Issues:  
+No function provided to achieve all records.   
+Only 1000 records are given when trying to extract data.   
+```{r}
+unique(get_interactions_by_type(interactiontype = c("eats"))['source_taxon_name'])
+```
+Could only get data for 5 unique source taxon.  
+
+
+Functions: Fields are not shown, could only show default fields? c("source_taxon_external_id","source_taxon_name", "source_taxon_path", "source_specimen_life_stage", "interaction_type", "target_taxon_external_id", "target_taxon_name", "target_taxon_path", "target_specimen_life_stage", "latitude", "longitude", "study_citation", "study_external_id", "study_source_citation")
+```{r}
+get_interactions_by_taxa('Larus marinus', interactiontype = 'eats', showfield = c('target_specimen_frequency_of_occurrence',	
+'target_specimen_frequency_of_occurrence_percent',	
+'target_specimen_total_volume_ml'))
+```
+
