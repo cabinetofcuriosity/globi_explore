@@ -14,7 +14,7 @@ Install and library package "rglobi":
 library(rglobi)
 ```
 
-```{r}
+```{r, message= FALSE}
 library('dplyr')
 ```
 
@@ -53,7 +53,7 @@ Since later I will look at dataframe involving only interaction types "eats" and
 Missing values:  
 ```{r}
 data<- get_interactions_by_type(interactiontype = c("eats"))
-data
+head(data)
 ```
 ```{r}
 apply(is.na(data), 2, sum)
@@ -63,8 +63,8 @@ Above all, we can see variables "source_specimen_life_stage", "target_specimen_l
 
 Except that, there are other missing values like "no:match" in column "target_taxon_external_id" and "no name" in column "target_taxon_name":   
 ```{r}
-data%>%
-  filter(target_taxon_external_id == 'no:match')
+head(data%>%
+  filter(target_taxon_external_id == 'no:match'))
 ```
     
 ```{r}
@@ -104,9 +104,6 @@ length(data[[1]])
 length(data[!duplicated(data),][[1]])
 ```
 
-#### Integrity:     
-???  
-
 #### Conformity:  
 So far, I believe that the data conform to the right conventions and standards.  
 
@@ -124,11 +121,11 @@ For example, explore "eats" and "eatenBy" interaction data for source_taxon: 'Ac
 ```{r}
 data10194<- get_interactions_by_type(interactiontype = c("eats"))%>%
   filter(source_taxon_external_id == 'WORMS:10194')
-data10194
+head(data10194)
 ```
 
 ```{r}
-unique(data10194['target_taxon_name'])
+head(unique(data10194['target_taxon_name']))
 ```
 What are the similaries or difference between these target taxon?   
 Fields to study: Path, physiological_state, frequency_of_occurrence(percent), total_volume_ml, total_volume_ml_percent, total_count, total_count_percent.  
@@ -142,10 +139,10 @@ unique(get_interactions_by_type(interactiontype = c("eats"))['source_taxon_name'
 Could only get data for 5 unique source taxon.  
 
 
-Functions: Fields are not shown, could only show default fields? c("source_taxon_external_id","source_taxon_name", "source_taxon_path", "source_specimen_life_stage", "interaction_type", "target_taxon_external_id", "target_taxon_name", "target_taxon_path", "target_specimen_life_stage", "latitude", "longitude", "study_citation", "study_external_id", "study_source_citation")
+Functionsdon't work, fields are not shown, could only show default fields: c("source_taxon_external_id","source_taxon_name", "source_taxon_path", "source_specimen_life_stage", "interaction_type", "target_taxon_external_id", "target_taxon_name", "target_taxon_path", "target_specimen_life_stage", "latitude", "longitude", "study_citation", "study_external_id", "study_source_citation")?
 ```{r}
-get_interactions_by_taxa('Larus marinus', interactiontype = 'eats', showfield = c('target_specimen_frequency_of_occurrence',	
+head(get_interactions_by_taxa('Larus marinus', interactiontype = 'eats', showfield = c('target_specimen_frequency_of_occurrence',	
 'target_specimen_frequency_of_occurrence_percent',	
-'target_specimen_total_volume_ml'))
+'target_specimen_total_volume_ml')))
 ```
 
