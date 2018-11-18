@@ -1,6 +1,7 @@
 # README.md
 
-Author: Yikang Li. 
+Author: Yikang Li.   
+
 Database: Globi
 
 Contents:  
