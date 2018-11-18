@@ -2,7 +2,7 @@
 
 Author: Yikang Li.   
 
-Database: Globi
+Database: **Globi**
 
 Contents:  
 
@@ -19,3 +19,4 @@ Contents:
 *`GloBi_exploration.md`*: Data exploration with R using 'rglobi'.  
 *`GloBi_exploration.Rmd`*: Data exploration with R using 'rglobi'.  
 
+**`output`**:   
