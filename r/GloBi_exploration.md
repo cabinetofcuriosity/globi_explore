@@ -409,40 +409,9 @@ data[1,]$source_taxon_path
 ```
 ## [1] "Biota | Animalia | Chordata | Vertebrata | Gnathostomata | Pisces | Actinopterygii"
 ```
-However, according to Wikipedia, it should be "Osteichthyes" instead of "Pisces". Actinopterygii (ray finned fishes) is a Subclass of Class Osteichthyes (bony fish).   
+However, according to Wikipedia, it should be "Osteichthyes" instead of "Pisces". 
+"Actinopterygii (ray finned fishes) is a Subclass of Class Osteichthyes (bony fish)" and "Pisces is an obsolete taxonomic term for fish"    
 
-3. There are also some weird records:  
-
-```r
-data%>%
-  filter(source_taxon_external_id == target_taxon_external_id)
-```
-
-```
-##   source_taxon_external_id source_taxon_name
-## 1              WORMS:10194    Actinopterygii
-## 2              WORMS:10194    Actinopterygii
-##                                                                    source_taxon_path
-## 1 Biota | Animalia | Chordata | Vertebrata | Gnathostomata | Pisces | Actinopterygii
-## 2 Biota | Animalia | Chordata | Vertebrata | Gnathostomata | Pisces | Actinopterygii
-##   source_specimen_life_stage interaction_type target_taxon_external_id
-## 1                         NA             eats              WORMS:10194
-## 2                         NA             eats              WORMS:10194
-##   target_taxon_name
-## 1    Actinopterygii
-## 2    Actinopterygii
-##                                                                    target_taxon_path
-## 1 Biota | Animalia | Chordata | Vertebrata | Gnathostomata | Pisces | Actinopterygii
-## 2 Biota | Animalia | Chordata | Vertebrata | Gnathostomata | Pisces | Actinopterygii
-##   target_specimen_life_stage latitude longitude study_citation
-## 1                         NA       NA        NA             NA
-## 2                         NA       NA        NA             NA
-##   study_source_citation
-## 1                    NA
-## 2                    NA
-```
-In the above 2 rows, the source_taxon and target_taxon are the same: "Actinopterygii", which means Actinopterygii eats itself. It is true that some species cannibalise each other, but I haven't found such actions among Actinopterygii.   
- 
 
 #### Uniqueness:  
 No. The entities within the dataset are not unique. This can be known by testing the length before and after removing duplicated rows:    
@@ -565,7 +534,7 @@ unique(get_interactions_by_type(interactiontype = c("eats"))['source_taxon_name'
 Could only get data for 5 unique source taxon.  
 
 
-Functionsdon't work, fields are not shown, could only show default fields: c("source_taxon_external_id","source_taxon_name", "source_taxon_path", "source_specimen_life_stage", "interaction_type", "target_taxon_external_id", "target_taxon_name", "target_taxon_path", "target_specimen_life_stage", "latitude", "longitude", "study_citation", "study_external_id", "study_source_citation")?
+Functionsdon't work, fields are not shown, could only show certain default fields-- c("source_taxon_external_id","source_taxon_name", "source_taxon_path", "source_specimen_life_stage", "interaction_type", "target_taxon_external_id", "target_taxon_name", "target_taxon_path", "target_specimen_life_stage", "latitude", "longitude", "study_citation", "study_external_id", "study_source_citation")?
 
 ```r
 head(get_interactions_by_taxa('Larus marinus', interactiontype = 'eats', showfield = c('target_specimen_frequency_of_occurrence',	
