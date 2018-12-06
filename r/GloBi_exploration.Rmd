@@ -11,7 +11,7 @@ date: 2018-10-13
   
 Install and library package "rglobi":  
 ```{r}
-library(rglobi)
+library('rglobi')
 ```
 
 ```{r, message= FALSE}
@@ -23,7 +23,7 @@ library('dplyr')
 The data from GloBi database are interaction data between species. Each row requires one source taxon, one target taxon and the interaction type that connects them.    
 
 How many types of animals?  
-?Can't achieve the entire dataset, still working on it.  
+Issue: Can't achieve the entire dataset, still working on it.  
 
 Variables in the database:   
 ```{r}
@@ -87,15 +87,8 @@ For example, the value for "source_taxon_path" in the first row is like:
 ```{r}
 data[1,]$source_taxon_path
 ```
-However, according to Wikipedia, it should be "Osteichthyes" instead of "Pisces". Actinopterygii (ray finned fishes) is a Subclass of Class Osteichthyes (bony fish).   
+However, according to Wikipedia, it should be "Osteichthyes" instead of "Pisces".    "Actinopterygii (ray finned fishes) is a Subclass of Class Osteichthyes (bony fish)" and "Pisces is an obsolete taxonomic term for fish"   
 
-3. There are also some weird records:  
-```{r}
-data%>%
-  filter(source_taxon_external_id == target_taxon_external_id)
-```
-In the above 2 rows, the source_taxon and target_taxon are the same: "Actinopterygii", which means Actinopterygii eats itself. It is true that some species cannibalise each other, but I haven't found such actions among Actinopterygii.   
- 
 
 #### Uniqueness:  
 No. The entities within the dataset are not unique. This can be known by testing the length before and after removing duplicated rows:    
@@ -144,11 +137,6 @@ Functionsdon't work, fields are not shown, could only show default fields: c("so
 head(get_interactions_by_taxa('Larus marinus', interactiontype = 'eats', showfield = c('target_specimen_frequency_of_occurrence',	
 'target_specimen_frequency_of_occurrence_percent',	
 'target_specimen_total_volume_ml')))
-```
-
-
-```{r}
-get_source_taxon_name()
 ```
 
 
