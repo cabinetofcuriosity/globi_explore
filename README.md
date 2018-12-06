@@ -6,7 +6,7 @@ Database: **Globi**
 
 Contents:  
 
-***`notebook`***:   
+**`notebook`**:   
 *`Globi_access.ipynb`*: Jupyter notebook for how to access the data; Basic data exploration.   
 *`with_old_tsv`*:   
    *`Globi_exploration_old.ipynb`*: First attempt at deep data exploration, with the older version of interactions.tsv. 
