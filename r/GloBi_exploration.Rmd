@@ -87,7 +87,8 @@ For example, the value for "source_taxon_path" in the first row is like:
 ```{r}
 data[1,]$source_taxon_path
 ```
-However, according to Wikipedia, it should be "Osteichthyes" instead of "Pisces".    "Actinopterygii (ray finned fishes) is a Subclass of Class Osteichthyes (bony fish)" and "Pisces is an obsolete taxonomic term for fish"   
+However, according to Wikipedia, it should be "Osteichthyes" instead of "Pisces".  
+"Actinopterygii (ray finned fishes) is a Subclass of Class Osteichthyes (bony fish)" and "Pisces is an obsolete taxonomic term for fish"   
 
 
 #### Uniqueness:  
