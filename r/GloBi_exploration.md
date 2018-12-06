@@ -409,7 +409,7 @@ data[1,]$source_taxon_path
 ```
 ## [1] "Biota | Animalia | Chordata | Vertebrata | Gnathostomata | Pisces | Actinopterygii"
 ```
-However, according to Wikipedia, it should be "Osteichthyes" instead of "Pisces". 
+However, according to Wikipedia, it should be "Osteichthyes" instead of "Pisces".               
 "Actinopterygii (ray finned fishes) is a Subclass of Class Osteichthyes (bony fish)" and "Pisces is an obsolete taxonomic term for fish"    
 
 
